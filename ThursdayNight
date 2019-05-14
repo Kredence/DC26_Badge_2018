@@ -1,0 +1,174 @@
+/*
+The original authors and framework of the IS31FL3731 coding was done by Adafruit.
+The original coding is heavily modified, non-existent, or has been expanded.
+You'll want to install the Adafruit GFX library along with the DC26_Illuminati.cpp and DC26_Illuminati.h
+
+The DEFCON 26 Illuminati Badge schematics, PCB layout, and coding was done by Kredence.
+A substantial portion of the assembly and PR/advertising was done by Ajax.
+
+I've left a lot of the commented out test code in this file. I may remove it in a future revision.
+
+The Eye and Iris pinout may change depending on how you set your bodge wiring. A tutorial will straighten this out shortly.
+*/
+
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <DC26_Illuminati.h>
+
+//This will need to be changed for the next set of bodging to get the pins in order 
+#define blueIris 3     //was A0, connect to 10
+#define redIris 10       //was A1, connect to 9 *
+#define greenIris 9     //was A2, connect to 6 *
+#define blueEye 6       //was A3, connect to 5 *
+#define redEye 5       //was A6, connect to 11 
+#define greenEye 11      //was A7, connect to 3 *
+
+#define wait 10          //Global wait period
+
+#define buttonPin 2
+
+DC26_Illuminati ledmatrix = DC26_Illuminati();
+
+int eyePosition = 0;
+int irisPosition = 400;
+
+int mainBrightness = 10;
+int eyeBrightness = 130;
+int irisBrightness = 255;
+
+int led;
+
+void setup() {
+  
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(13, OUTPUT);
+
+  pinMode(2, INPUT);
+
+  ledmatrix.begin();
+  
+//  Serial.begin(9600);
+//  Serial.println("ISSI manual animation test");
+//  if (! ledmatrix.begin()) {
+//    Serial.println("IS31 not found");
+//    while (1);
+//  }
+//  Serial.println("IS31 Found!");
+
+  delay(50);
+//  borderLights();
+}
+
+
+void loop() {
+
+//  eyeColorShifter();
+//  irisColorShifter();
+  thursdayNight();
+//  analogWrite(redIris, 255);
+//  delay(5000);
+//  analogWrite(redIris, 0);
+//  analogWrite(greenIris, 255);
+//  delay(5000);
+//  analogWrite(greenIris, 0);
+//  analogWrite(blueIris, 255);
+//  delay(5000);
+//  analogWrite(blueIris, 0);
+//  analogWrite(redEye, 255);
+//  delay(5000);
+//  analogWrite(redEye, 0);
+//  analogWrite(greenEye, 255);
+//  delay(5000);
+//  analogWrite(greenEye, 0);
+//  analogWrite(blueEye, 255);
+//  delay(5000);
+//  analogWrite(blueEye, 0);
+
+}
+
+void eyeColorShifter(){
+  if(eyePosition <= 255){      // fade from green to red
+      analogWrite(redEye, eyePosition);
+      analogWrite(greenEye, 255-eyePosition);
+      analogWrite(blueEye, 0);
+      eyePosition++;
+      delay(wait);
+    }
+    if(eyePosition > 255 && eyePosition <= 511){  // fade from red to blue
+      int correctedPostion = eyePosition - 256;
+      analogWrite(redEye, 255-correctedPostion);
+      analogWrite(greenEye, 0);
+      analogWrite(blueEye, correctedPostion);
+      eyePosition++;
+      delay(wait);
+    }
+    if(eyePosition > 511 && eyePosition <= 767){  // fade from blue to green
+      int correctedPostion = eyePosition - 512; 
+      analogWrite(redEye, 0);
+      analogWrite(greenEye, correctedPostion);
+      analogWrite(blueEye, 255-correctedPostion);
+      if(eyePosition < 767){
+        eyePosition++;
+      }else{
+        eyePosition = 0;
+      }
+      delay(wait);
+    }
+}
+
+void irisColorShifter(){
+  if(irisPosition <= 255){      // fade from green to red
+      analogWrite(redIris, irisPosition);
+      analogWrite(greenIris, 255-irisPosition);
+      analogWrite(blueIris, 0);
+      irisPosition++;
+      delay(wait);
+    }
+    if(irisPosition > 255 && irisPosition <= 511){  // fade from red to blue
+      int correctedPostion = irisPosition - 256;
+      analogWrite(redIris, 255-correctedPostion);
+      analogWrite(greenIris, 0);
+      analogWrite(blueIris, correctedPostion);
+      irisPosition++;
+      delay(wait);
+    }
+    if(irisPosition > 511 && irisPosition <= 767){  // fade from blue to green
+      int correctedPostion = irisPosition - 512; 
+      analogWrite(redIris, 0);
+      analogWrite(greenIris, correctedPostion);
+      analogWrite(blueIris, 255-correctedPostion);
+      if(irisPosition < 767){
+        irisPosition++;
+      }else{
+        irisPosition = 0;
+      }
+      delay(wait);
+    }
+}
+
+//Randomly blink and flash LEDs
+void thursdayNight(){
+    for(int i = 0; i < 3; i++){
+      int randomON = random(1,92);
+      int randomPWM = random(0,25);
+      ledmatrix.setLEDPWM(randomON,randomPWM);
+    }
+    
+    for(int i = 0; i < 3; i++){
+      int randomOFF = random(1,92);
+      ledmatrix.setLEDPWM(randomOFF,0);
+    }
+
+//    for(int x =72; x <=78; x++){
+//    ledmatrix.setLEDPWM(x,mainBrightness);
+//    ledmatrix.setLEDPWM(x+7,mainBrightness);
+//    ledmatrix.setLEDPWM(x+14,mainBrightness);
+//    }         
+    eyeColorShifter();
+    irisColorShifter();
+    //delay(40);
+}
