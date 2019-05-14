@@ -16,5 +16,9 @@ Update (end of 2018): Board Rev1C was completed and will be available as a kit s
 
 Update early 2019: I was seriously delayed in getting the board construction tutorial created along with releasing the board coding. I had intended to do a full re-write on the code. I've decided to simply post what was running at the conference instead of delaying the release. :-)
 
+"ThursdayNight" is the code that ran on the badge during the conference. Some of you heard the story but I had a hard drive failure, while working on code, on our way to DEFCON. ThursdayNight was a rushed rebuild. It works well but some of the special effects I had written are gone. I hope to sit down and rewrite it again soon.
+
+You'll need the DC26_Illuminati.cpp and DC26_Illuminati.h files allowing with installing the Adafruit_GFX.h library.
+
 Thanks!
 Kredence
