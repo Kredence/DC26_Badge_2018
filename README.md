@@ -12,5 +12,9 @@ Board rev1b has all of the traces fixed but I goobered up the pin layout for the
 Board rev1c will be finished after the Con. I'll post it up on PCBway if anyone wants to buy and build them.
 I'll have the BOM and code here.
 
+Update (end of 2018): Board Rev1C was completed and will be available as a kit shortly.
+
+Update early 2019: I was seriously delayed in getting the board construction tutorial created along with releasing the board coding. I had intended to do a full re-write on the code. I've decided to simply post what was running at the conference instead of delaying the release. :-)
+
 Thanks!
 Kredence
